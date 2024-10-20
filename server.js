@@ -51,11 +51,10 @@ async function writeDataToR2(key, data) {
 app.use(cors({
   origin: '*', // Allow all origins
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow all methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public')); // Serve static files from public directory
+app.use(express.static('public')); // Serve static files from the public directory
 
 // Upload and create howl (post) with media to R2
 app.post('/api/howls', upload.single('media'), async (req, res) => {
@@ -102,27 +101,42 @@ app.post('/api/howls', upload.single('media'), async (req, res) => {
 
 // Fetch all howls (posts)
 app.get('/api/howls', async (req, res) => {
-  const howls = await readDataFromR2('howls.txt');
-  res.json(howls.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+  try {
+    const howls = await readDataFromR2('howls.txt');
+    res.json(howls.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+  } catch (error) {
+    console.error('Error fetching howls:', error);
+    res.status(500).send('Error fetching howls');
+  }
 });
 
 // Like or Unlike a howl (persisted in R2)
 app.post('/api/howls/:id/like', async (req, res) => {
   const howlId = parseInt(req.params.id);
-  let howls = await readDataFromR2('howls.txt');
-  const howl = howls.find(h => h.id === howlId);
+  try {
+    let howls = await readDataFromR2('howls.txt');
+    const howl = howls.find(h => h.id === howlId);
 
-  if (!howl) {
-    return res.status(404).send('Howl not found');
+    if (!howl) {
+      return res.status(404).send('Howl not found');
+    }
+
+    // Toggle "like" status
+    howl.likes = (howl.likes || 0) + 1;
+
+    // Store the updated howls back to R2
+    await writeDataToR2('howls.txt', howls);
+
+    res.json(howl);
+  } catch (error) {
+    console.error('Error liking howl:', error);
+    res.status(500).send('Error liking howl');
   }
+});
 
-  // Toggle "like" status
-  howl.likes = (howl.likes || 0) + 1;
-
-  // Store the updated howls back to R2
-  await writeDataToR2('howls.txt', howls);
-
-  res.json(howl);
+// Catch-all for any undefined routes
+app.use((req, res) => {
+  res.status(404).send('Route not found');
 });
 
 // Start the server
