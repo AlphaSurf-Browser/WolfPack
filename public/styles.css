@@ -1,0 +1,113 @@
+/* General body styling for a dark theme */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a; /* Dark background */
+    color: #e0e0e0; /* Light text for contrast */
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+  
+  /* Container styling */
+  .container {
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #2c2c2c; /* Darker background for container */
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5); /* Soft shadow for depth */
+  }
+  
+  /* Header styling */
+  h1, h2 {
+    color: #e0e0e0; /* Maintain contrast for headers */
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  /* Howl box for posting new content */
+  .howl-box {
+    background-color: #333; /* Slightly lighter for contrast */
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  textarea {
+    width: 100%;
+    background-color: #444; /* Darker input field */
+    color: #e0e0e0; /* Lighter text for better contrast */
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    resize: none;
+  }
+  
+  input[type="file"] {
+    margin-top: 10px;
+  }
+  
+  .howl-button {
+    background-color: #6a5acd; /* Softer color for buttons */
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .howl-button:hover {
+    background-color: #7b6df1; /* Lighter hover effect */
+  }
+  
+  /* Individual howl styling */
+  .howl {
+    background-color: #282828; /* Darker background for howls */
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+  }
+  
+  .howl-content {
+    margin-bottom: 10px;
+  }
+  
+  /* Media in howls */
+  .howl img, .howl video {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  
+  /* Action buttons (likes) */
+  .howl-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .howl-actions button {
+    background-color: transparent;
+    color: #6a5acd;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+  }
+  
+  .howl-actions button:hover {
+    color: #7b6df1; /* Hover color for buttons */
+  }
+  
+  .howl-actions span {
+    color: #bbb; /* Soft color for text */
+  }
+  
+  /* Ensure all text has appropriate contrast */
+  p, span {
+    color: #bbb;
+  }
+  
+  
