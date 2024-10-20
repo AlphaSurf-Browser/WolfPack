@@ -454,30 +454,6 @@
       </div>
     </div>
   
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Login</h2>
-        <input type="text" id="login-username" placeholder="Username">
-        <input type="password" id="login-password" placeholder="Password">
-        <button id="login-submit" class="howl-button">Login</button>
-        <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
-      </div>
-    </div>
-  
-    <!-- Register Modal -->
-    <div id="register-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Register</h2>
-        <input type="text" id="register-username" placeholder="Username">
-        <input type="password" id="register-password" placeholder="Password">
-        <button id="register-submit" class="howl-button">Register</button>
-        <p>Already have an account? <a href="#" id="show-login">Login</a></p>
-      </div>
-    </div>
-  
     <script>
       document.addEventListener('DOMContentLoaded', function() {
         let isReelMode = false;
@@ -485,7 +461,7 @@
   
         const token = localStorage.getItem('token');
         if (token) {
-          fetch('http://localhost:5000/api/validate-token', {
+          fetch('https://wolfpacksocial.pages.dev/api/validate-token', {
             headers: {
               'Authorization': `Bearer ${token}`
             }
@@ -495,17 +471,6 @@
             currentUser = data.user;
             updateUIForLoggedInUser();
           })
-          .catch(error => {
-            console.error('Error validating token:', error);
-            showLoginModal();
-          });
-        } else {
-          showLoginModal();
-        }
-  
-        function showLoginModal() {
-          document.getElementById('login-modal').style.display = 'block';
-        }
   
         function updateUIForLoggedInUser() {
           document.querySelector('.profile-img').src = currentUser.avatarUrl;
@@ -514,7 +479,7 @@
         }
   
         function fetchHowls() {
-          fetch('http://localhost:5000/api/howls')
+          fetch('http://wolfpacksocial.pages.dev/api/howls')
             .then(response => response.json())
             .then(howls => {
               const feed = document.querySelector('.feed');
@@ -538,7 +503,7 @@
               }
             }
   
-            fetch('http://localhost:5000/api/howls', {
+            fetch('http://wolfpacksocial.pages.dev:5000/api/howls', {
               method: 'POST',
               headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -578,66 +543,6 @@
           `;
           feed.prepend(howlElement);
         }
-  
-        document.getElementById('login-submit').addEventListener('click', function() {
-          const username = document.getElementById('login-username').value;
-          const password = document.getElementById('login-password').value;
-  
-          fetch('http://localhost:5000/api/login', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-          })
-          .then(response => response.json())
-          .then(data => {
-            localStorage.setItem('token', data.token);
-            currentUser = data.user;
-            updateUIForLoggedInUser();
-            document.getElementById('login-modal').style.display = 'none';
-          })
-          .catch(error => console.error('Error during login:', error));
-        });
-  
-        document.getElementById('register-submit').addEventListener('click', function() {
-          const username = document.getElementById('register-username').value;
-          const password = document.getElementById('register-password').value;
-  
-          fetch('http://localhost:5000/api/register', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ username, password })
-          })
-          .then(response => response.json())
-          .then(data => {
-            document.getElementById('register-modal').style.display = 'none';
-            showLoginModal();
-          })
-          .catch(error => console.error('Error during registration:', error));
-        });
-  
-        document.getElementById('show-register').addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('login-modal').style.display = 'none';
-          document.getElementById('register-modal').style.display = 'block';
-        });
-  
-        document.getElementById('show-login').addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('register-modal').style.display = 'none';
-          document.getElementById('login-modal').style.display = 'block';
-        });
-  
-        window.onclick = function(event) {
-          if (event.target === document.getElementById('login-modal')) {
-            document.getElementById('login-modal').style.display = "none";
-          }
-          if (event.target === document.getElementById('register-modal')) {
-            document.getElementById('register-modal').style.display = "none";
-          }
           if (event.target === document.getElementById('profile-modal')) {
             document.getElementById('profile-modal').style.display = "none";
           }
