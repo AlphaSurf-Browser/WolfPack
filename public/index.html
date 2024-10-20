@@ -1,583 +1,124 @@
-<html><head><base href="/">
+<!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WolfPack - Howl Your Thoughts</title>
   <style>
+    /* Basic styling for the Howl system */
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #1a1a1a;
-      color: #e0e0e0;
+      background-color: #f0f0f0;
+      color: #333;
     }
     .container {
-      max-width: 1200px;
+      width: 80%;
       margin: 0 auto;
       padding: 20px;
-      display: grid;
-      grid-template-columns: 1fr 2fr 1fr;
-      gap: 20px;
-    }
-    header {
-      background-color: #333;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .logo-container {
-      display: flex;
-      align-items: center;
-    }
-    .nav-menu {
-      display: flex;
-      gap: 20px;
-    }
-    .nav-item {
-      color: #e0e0e0;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
     }
     .howl-box {
-      background-color: #333;
-      border-radius: 10px;
-      padding: 15px;
       margin-bottom: 20px;
     }
-    .howl-input {
-      width: 100%;
-      height: 100px;
-      background-color: #444;
-      border: none;
-      border-radius: 5px;
-      color: #e0e0e0;
-      padding: 10px;
-      resize: none;
-    }
-    .howl-button {
-      background-color: #6a5acd;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 20px;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-    .feed {
-      margin-top: 30px;
-    }
     .howl {
-      background-color: #333;
-      border-radius: 10px;
+      background-color: #fff;
       padding: 15px;
-      margin-bottom: 15px;
-    }
-    .howl-author {
-      font-weight: bold;
-      margin-bottom: 5px;
-      display: flex;
-      align-items: center;
-    }
-    .howl-author-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     .howl-content {
       margin-bottom: 10px;
     }
-    .howl-media {
+    .howl img, .howl video {
       max-width: 100%;
-      border-radius: 10px;
+      border-radius: 5px;
       margin-bottom: 10px;
     }
     .howl-actions {
       display: flex;
       justify-content: space-between;
     }
-    .howl-action {
-      cursor: pointer;
-      color: #6a5acd;
-    }
-    .filters {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .filter {
-      background-color: #333;
-      color: #e0e0e0;
-      border: none;
-      padding: 10px 15px;
-      margin: 0 5px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    .filter.active {
-      background-color: #6a5acd;
-    }
-    .profile {
-      cursor: pointer;
-      position: relative;
-    }
-    .profile-img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-    }
-    .profile-upload {
-      display: none;
-      position: absolute;
-      top: 100%;
-      right: 0;
-      background-color: #444;
-      padding: 10px;
-      border-radius: 5px;
-    }
-    .profile:hover .profile-upload {
-      display: block;
-    }
-    .sidebar {
-      background-color: #333;
-      border-radius: 10px;
-      padding: 15px;
-    }
-    .sidebar h2 {
-      margin-top: 0;
-    }
-    .search-bar {
-      width: 100%;
-      padding: 10px;
-      border: none;
-      border-radius: 20px;
-      background-color: #444;
-      color: #e0e0e0;
-      margin-bottom: 20px;
-    }
-    .group-list, .trending-list {
-      list-style-type: none;
-      padding: 0;
-    }
-    .group-list li, .trending-list li {
-      margin-bottom: 10px;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1001;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.4);
-    }
-    .modal-content {
-      background-color: #333;
-      margin: 15% auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 60%;
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .media-preview {
-      max-width: 100%;
-      max-height: 200px;
-      margin-top: 10px;
-    }
-    #report-modal .modal-content {
-      max-width: 400px;
-    }
-    #report-reason, #report-details {
-      width: 100%;
-      margin-bottom: 10px;
-      padding: 5px;
-      background-color: #444;
-      border: none;
-      color: #e0e0e0;
-    }
-    #report-details {
-      height: 100px;
-      resize: vertical;
-    }
-    .media-preview-container {
-      position: relative;
-      display: inline-block;
-    }
-    .remove-media {
-      position: absolute;
-      top: 5px;
-      right: 5px;
-      background-color: rgba(0,0,0,0.5);
-      color: white;
-      border: none;
-      border-radius: 50%;
-      width: 20px;
-      height: 20px;
-      font-size: 12px;
-      cursor: pointer;
-    }
-    .reel-toggle {
+    .howl-button {
       background-color: #6a5acd;
       color: white;
       border: none;
       padding: 10px 20px;
-      border-radius: 20px;
+      border-radius: 5px;
       cursor: pointer;
-      margin-right: 10px;
-    }
-    .reels-container {
-      display: flex;
-      overflow-x: auto;
-      padding: 10px 0;
-    }
-    .reel {
-      width: 120px;
-      height: 200px;
-      background-color: #333;
-      margin-right: 10px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-    .reel video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .reels-container {
-      display: flex;
-      flex-direction: column;
-      height: calc(100vh - 100px);
-      overflow-y: scroll;
-      scroll-snap-type: y mandatory;
-    }
-    .reel {
-      flex: 0 0 100%;
-      scroll-snap-align: start;
-      position: relative;
-      height: 100%;
-    }
-    .reel video,
-    .reel img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    .reel-info {
-      position: absolute;
-      bottom: 20px;
-      left: 20px;
-      color: white;
-      text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
-    }
-    .reel-author-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      margin-right: 10px;
-    }
-    .reel-text-content {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      font-size: 24px;
-      padding: 20px;
-      background-color: #333;
-      color: white;
-    }
-    .shorts-container {
-      display: none;
-    }
-    .short {
-      background-color: #333;
-      border-radius: 10px;
-      margin-bottom: 10px;
-      position: relative;
-    }
-    .short video {
-      width: 100%;
-      height: auto;
-    }
-    .short-info {
-      padding: 10px;
-      display: flex;
-      align-items: center;
-    }
-    .short-author-avatar {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: 10px;
+      margin-top: 10px;
     }
   </style>
-  </head>
-  <body>
-    <header>
-      <div class="logo-container">
-        <h1>WolfPack</h1>
-      </div>
-      <nav class="nav-menu">
-        <a class="nav-item" id="home-link">Home</a>
-        <a class="nav-item" id="profile-link">Profile</a>
-        <a class="nav-item" id="discover-link">Discover</a>
-        <a class="nav-item" id="groups-link">Groups</a>
-      </nav>
-      <div class="profile">
-        <img class="profile-img" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj4KICA8Y2lyY2xlIGN4PSI1MCIgY3k9IjUwIiByPSI0OCIgZmlsbD0iIzZhNWFjZCIvPgogIDxwYXRoIGQ9Ik01MCAyNSBDNDAgMjUgMzUgMzUgMzUgNDUgQzM1IDU1IDQwIDYwIDUwIDYwIEM2MCA2MCA2NSA1NSA2NSA0NSBDNjUgMzUgNjAgMjUgNTAgMjUgWiIgZmlsbD0iI2UwZTBlMCIvPgogIDxjaXJjbGUgY3g9IjMwIiBjeT0iNTUiIHI9IjE1IiBmaWxsPSIjZTBlMGUwIi8+CiAgPGNpcmNsZSBjeD0iNzAiIGN5PSI1NSIgcj0iMTUiIGZpbGw9IiNlMGUwZTAiLz4KICA8Y2lyY2xlIGN4PSI0MCIgY3k9IjgwIiByPSIxNSIgZmlsbD0iI2UwZTBlMCIvPgogIDxjaXJjbGUgY3g9IjYwIiBjeT0iODAiIHI9IjE1IiBmaWxsPSIjZTBlMGUwIi8+Cjwvc3ZnPg==" alt="Profile picture">
-        <div class="profile-upload">
-          <input type="file" id="profile-pic-upload" accept="image/*">
-          <label for="profile-pic-upload">Change Profile Picture</label>
-        </div>
-      </div>
-    </header>
-  
-    <div class="container">
-      <aside class="sidebar">
-        <h2>Discover</h2>
-        <input type="text" class="search-bar" placeholder="Search WolfPack">
-        <h3>Trending Howls</h3>
-        <ul class="trending-list">
-          <!-- Trending howls will be dynamically added here -->
-        </ul>
-      </aside>
-  
-      <main>
-        <div class="howl-box">
-          <textarea class="howl-input" placeholder="What's on your mind? Let out a howl!"></textarea>
-          <input type="file" id="media-upload" accept="image/*, video/*" style="display: none;">
-          <label for="media-upload" class="howl-button" style="margin-right: 10px;">Add Media</label>
-          <button class="reel-toggle">Toggle Reel</button>
-          <button class="howl-button">Howl</button>
-          <div id="media-preview-container" class="media-preview-container"></div>
-        </div>
-  
-        <div class="shorts-container">
-          <!-- Shorts will be dynamically added here -->
-        </div>
-  
-        <div class="reels-container" style="display: none;">
-          <!-- Reels will be dynamically added here -->
-        </div>
-  
-        <div class="filters">
-          <button class="filter active" data-filter="all">All Howls</button>
-          <button class="filter" data-filter="pack">My Pack</button>
-          <button class="filter" data-filter="trending">Trending</button>
-          <button class="filter" data-filter="media">Media</button>
-          <button class="filter" data-filter="liked">Liked</button>
-          <button class="filter" data-filter="videos">Videos</button>
-        </div>
-  
-        <div class="feed">
-          <!-- Howls will be dynamically added here -->
-        </div>
-      </main>
-  
-      <aside class="sidebar">
-        <h2>Your Groups</h2>
-        <ul class="group-list">
-          <!-- Groups will be dynamically added here -->
-        </ul>
-        <button id="create-group" class="howl-button">Create New Group</button>
-      </aside>
+</head>
+<body>
+  <div class="container">
+    <h1>Howl Your Thoughts!</h1>
+
+    <div class="howl-box">
+      <textarea id="howl-content" placeholder="What's on your mind?" rows="4" style="width:100%;"></textarea>
+      <input type="file" id="howl-media" accept="image/*,video/*">
+      <button class="howl-button" id="post-howl">Howl</button>
     </div>
-  
-    <!-- Profile Modal -->
-    <div id="profile-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Your Profile</h2>
-        <img id="profile-avatar" src="" alt="Profile Avatar" style="width: 100px; height: 100px; border-radius: 50%;">
-        <h3 id="profile-username"></h3>
-        <p id="profile-bio"></p>
-        <button id="edit-profile" class="howl-button">Edit Profile</button>
-        <h3>Your Howls</h3>
-        <div id="user-howls">
-          <!-- User's howls will be dynamically added here -->
-        </div>
-      </div>
+
+    <h2>Recent Howls</h2>
+    <div id="howl-feed">
+      <!-- Howls will be loaded here dynamically -->
     </div>
-  
-    <!-- Discover Modal -->
-    <div id="discover-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Discover New Packs and Wolves</h2>
-        <input type="text" class="search-bar" placeholder="Search for users or groups">
-        <div id="discover-results">
-          <!-- Search results will be dynamically added here -->
-        </div>
-      </div>
-    </div>
-  
-    <!-- Groups Modal -->
-    <div id="groups-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Your Groups</h2>
-        <div id="user-groups">
-          <!-- User's groups will be dynamically added here -->
-        </div>
-        <h3>Create a New Group</h3>
-        <input type="text" id="new-group-name" placeholder="Group Name">
-        <textarea id="new-group-description" placeholder="Group Description"></textarea>
-        <button id="create-group-submit" class="howl-button">Create Group</button>
-      </div>
-    </div>
-  
-    <!-- Report Modal -->
-    <div id="report-modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Report Howl</h2>
-        <p>Why are you reporting this howl?</p>
-        <select id="report-reason">
-          <option value="spam">Spam</option>
-          <option value="harassment">Harassment</option>
-          <option value="inappropriate">Inappropriate Content</option>
-          <option value="other">Other</option>
-        </select>
-        <textarea id="report-details" placeholder="Provide more details (optional)"></textarea>
-        <button id="submit-report" class="howl-button">Submit Report</button>
-      </div>
-    </div>
-  
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        let isReelMode = false;
-        let currentUser = null;
-  
-        const token = localStorage.getItem('token');
-        if (token) {
-          fetch('https://wolfpacksocial.pages.dev/api/validate-token', {
-            headers: {
-              'Authorization': `Bearer ${token}`
-            }
-          })
-          .then(response => response.json())
-          .then(data => {
-            currentUser = data.user;
-            updateUIForLoggedInUser();
-          })
-  
-        function updateUIForLoggedInUser() {
-          document.querySelector('.profile-img').src = currentUser.avatarUrl;
-          document.getElementById('profile-username').textContent = currentUser.username;
-          fetchHowls();
-        }
-  
-        function fetchHowls() {
-          fetch('http://wolfpacksocial.pages.dev/api/howls')
-            .then(response => response.json())
-            .then(howls => {
-              const feed = document.querySelector('.feed');
-              feed.innerHTML = '';
-              howls.forEach(addHowlToFeed);
-            })
-            .catch(error => console.error('Error fetching howls:', error));
-        }
-  
-        document.querySelector('.howl-button:not([for="media-upload"])').addEventListener('click', function() {
-          const howlContent = document.querySelector('.howl-input').value;
-          const mediaPreviewContainer = document.getElementById('media-preview-container');
-          if (howlContent.trim() !== '' || mediaPreviewContainer.firstChild) {
-            const formData = new FormData();
-            formData.append('content', howlContent);
-            
-            if (mediaPreviewContainer.firstChild) {
-              const mediaElement = mediaPreviewContainer.querySelector('video, img');
-              if (mediaElement) {
-                formData.append('media', mediaElement.src);
-              }
-            }
-  
-            fetch('http://wolfpacksocial.pages.dev:5000/api/howls', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-              },
-              body: formData
-            })
-            .then(response => response.json())
-            .then(newHowl => {
-              addHowlToFeed(newHowl);
-              document.querySelector('.howl-input').value = '';
-              mediaPreviewContainer.innerHTML = '';
-            })
-            .catch(error => console.error('Error posting howl:', error));
-          }
-        });
-  
-        function addHowlToFeed(howl) {
-          const feed = document.querySelector('.feed');
-          const howlElement = document.createElement('div');
-          howlElement.className = 'howl';
-          howlElement.innerHTML = `
-            <div class="howl-author">
-              <img class="howl-author-avatar" src="${howl.author.avatarUrl}" alt="${howl.author.username}'s avatar">
-              <span>${howl.author.username}</span>
-            </div>
-            <div class="howl-content">${howl.content}</div>
-            ${howl.media ? 
-                (howl.media.type === 'video' ? 
-                  `<video class="howl-media" src="${howl.media.url}" controls></video>` : 
-                  `<img class="howl-media" src="${howl.media.url}" alt="Howl media">`)
-            : ''}
-            <div class="howl-actions">
-              <span class="howl-action paw-action">🐾 ${howl.paws || 0}</span>
-              <span class="howl-action rehowl-action">🐺 ${howl.rehowls || 0}</span>
-              <span class="howl-action reply-action">💬 ${howl.replies || 0}</span>
-            </div>
-          `;
-          feed.prepend(howlElement);
-        }
-          if (event.target === document.getElementById('profile-modal')) {
-            document.getElementById('profile-modal').style.display = "none";
-          }
-          if (event.target === document.getElementById('discover-modal')) {
-            document.getElementById('discover-modal').style.display = "none";
-          }
-          if (event.target === document.getElementById('groups-modal')) {
-            document.getElementById('groups-modal').style.display = "none";
-          }
-          if (event.target === document.getElementById('report-modal')) {
-            document.getElementById('report-modal').style.display = "none";
-          }
-        }
-  
-        document.getElementById('home-link').addEventListener('click', function(e) {
-          e.preventDefault();
-          document.querySelector('.filter[data-filter="all"]').click();
-        });
-  
-        document.getElementById('profile-link').addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('profile-modal').style.display = 'block';
-        });
-  
-        document.getElementById('discover-link').addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('discover-modal').style.display = 'block';
-        });
-  
-        document.getElementById('groups-link').addEventListener('click', function(e) {
-          e.preventDefault();
-          document.getElementById('groups-modal').style.display = 'block';
-        });
-  
+  </div>
+
+  <script>
+    const howlFeed = document.getElementById('howl-feed');
+    const postButton = document.getElementById('post-howl');
+
+    // Function to fetch howls
+    async function fetchHowls() {
+      const response = await fetch('/api/howls');
+      const howls = await response.json();
+      howlFeed.innerHTML = ''; // Clear previous howls
+
+      howls.forEach(howl => {
+        const howlDiv = document.createElement('div');
+        howlDiv.className = 'howl';
+        howlDiv.innerHTML = `
+          <div class="howl-content">${howl.content}</div>
+          ${howl.media ? (howl.media.type === 'image' ? 
+            `<img src="${howl.media.url}" alt="Media">` :
+            `<video src="${howl.media.url}" controls></video>`) : ''}
+          <div class="howl-actions">
+            <span>Likes: ${howl.likes}</span>
+            <button onclick="likeHowl(${howl.id})">🐾 Like</button>
+          </div>
+        `;
+        howlFeed.appendChild(howlDiv);
       });
-    </script>
-  </body>
-  </html>
+    }
+
+    // Function to like a howl
+    async function likeHowl(howlId) {
+      await fetch(`/api/howls/${howlId}/like`, { method: 'POST' });
+      fetchHowls(); // Reload the howls to show updated likes
+    }
+
+    // Function to post a howl
+    postButton.addEventListener('click', async () => {
+      const content = document.getElementById('howl-content').value;
+      const media = document.getElementById('howl-media').files[0];
+
+      const formData = new FormData();
+      formData.append('content', content);
+      if (media) formData.append('media', media);
+
+      await fetch('/api/howls', {
+        method: 'POST',
+        body: formData,
+      });
+
+      document.getElementById('howl-content').value = ''; // Clear the input
+      document.getElementById('howl-media').value = ''; // Clear the file input
+      fetchHowls(); // Reload the howls
+    });
+
+    // Load howls on page load
+    window.onload = fetchHowls;
+  </script>
+</body>
+</html>
