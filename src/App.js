@@ -9,7 +9,7 @@ const App = () => {
 
   // Function to start the Express server
   const startServer = () => {
-    const serverPath = 'server.js'
+    const serverPath = path.join('', 'server.js'); // Adjust the path if necessary
 
     const server = spawn('node', [serverPath], { stdio: 'inherit' });
 
