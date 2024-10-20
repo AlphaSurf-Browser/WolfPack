@@ -8,7 +8,6 @@ const App = () => {
 
   // UseEffect to run the server when the component mounts
   useEffect(() => {
-    startServer(); // Start the Express server
     const fetchHtml = async () => {
       try {
         const response = await fetch('/'); // Fetch the index.html served by the Express server
@@ -32,7 +31,6 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Howl App</h1>
       <div dangerouslySetInnerHTML={{ __html: htmlContent }} /> {/* Render the fetched HTML */}
     </div>
   );
