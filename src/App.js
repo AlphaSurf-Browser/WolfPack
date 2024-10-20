@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './App.css'; // Include any necessary CSS
-import { spawn } from 'child_process';
+import child_process, { spawn } from 'node:child_process'
 import path from 'path';
 
 const App = () => {
