@@ -13,7 +13,7 @@ const upload = multer({ storage });
 
 // Cloudflare R2 S3 configuration
 const s3 = new AWS.S3({
-  endpoint: process.env.R2_ENDPOINT,  // Set this as "https://<account-id>.r2.cloudflarestorage.com"
+  endpoint: process.env.R2_ENDPOINT,
   accessKeyId: process.env.R2_ACCESS_KEY_ID,
   secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
   signatureVersion: 'v4',
@@ -48,7 +48,11 @@ async function writeDataToR2(key, data) {
 }
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: '*', // Allow all origins
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow all methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Specify allowed headers
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public')); // Serve static files from public directory
