@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css'; // Include any necessary CSS
+import { spawn } from 'node:child_process';
 import path from 'path';
-const { exec } = require('child_process');
 
 const App = () => {
   const [htmlContent, setHtmlContent] = useState(''); // State for HTML content
