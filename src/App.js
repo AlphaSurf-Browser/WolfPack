@@ -1,22 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import './App.css'; // Include any necessary CSS
-import { spawn } from 'child_process';  // No 'node:' prefix needed
-import path from 'path';
 
 const App = () => {
   const [htmlContent, setHtmlContent] = useState(''); // State for HTML content
   const [error, setError] = useState(null); // State for error handling
 
-  // Function to start the Express server
-  const startServer = () => {
-    const serverPath = path.join('', 'server.js'); // Adjust the path if necessary
-
-    const server = spawn('node', [serverPath], { stdio: 'inherit' });
-
-    server.on('close', (code) => {
-      console.log(`Server process exited with code ${code}`);
-    });
-  };
 
   // UseEffect to run the server when the component mounts
   useEffect(() => {
