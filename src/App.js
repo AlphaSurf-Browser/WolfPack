@@ -5,7 +5,7 @@ const App = () => {
 
   useEffect(() => {
     // Fetch the content of public/index.html
-    fetch('/index.html')
+    fetch('public/index.html')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
